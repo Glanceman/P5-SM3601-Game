@@ -48,32 +48,50 @@
  }
 
  function draw() { ////////////////////////////
-    playBGM();
-   Zone();
-   Start();
-   Score();
-   Obstacle();
+   playBGM();
+   createZone();
+   startMenu();
+   countScore();
+   if (start == true && starting == false) {  //generate particle
+     for (var i = 0; i < 10; i++) {
+       parX[i] = random(windowWidth);
+       parY[i] = random(windowHeight);
+       obstacle[i] = new Particle(parX[i], parY[i]); 
+     }
+     starting = true;
+   }
+   for (var k = 0; k < obstacle.length; k++) {
+     obstacle[k].follow();
+     obstacle[k].update();
+     obstacle[k].show();
+   }
    Player();
-   touchReation();
+   if (isPlayerTouchAnything() == true && start == true) {///stop the program
+     push();
+     stroke(0);
+     strokeWeight(10);
+     textSize(20);
+     fill(255);
+     text("GAMEOVER", windowWidth / 2, windowHeight / 2);
+     text("Your score: " + score, windowWidth / 2, windowHeight / 2 + 50);
+     text("Press any mouse's button to restart!", windowWidth / 2, windowHeight / 2 + 100);
+     pop();
+     score = 0;
+     noLoop();
+   }
  } /////////////////////////////////////////////////////////
 
- function Zone() {
+ function createZone() {
    push();
    zoneWidth = lerp(windowWidth, windowWidth * 3 / 5, temp);
    zoneHeight = lerp(windowHeight, windowHeight * 4 / 5, temp);
-   background(160, 82, 45);
+   background(100);
    rectMode(CENTER);
-   fill(255, 204, 0);
+   fill(200);
    stroke(0);
    strokeWeight(2);
    rect(windowWidth / 2, windowHeight / 2, zoneWidth, zoneHeight);
-   //text(temp, 600, 600);
-   // if ((pmouseX < (windowWidth + zoneWidth-playerSize) / 2 && pmouseX > (windowWidth - zoneWidth+playerSize) / 2) && (pmouseY > (windowHeight - zoneHeight+playerSize)/2 && pmouseY < (windowHeight + zoneHeight-playerSize) / 2)) {
-   //   touchFlag = false;
-   // } else {
-   //   touchFlag = true;
-   // }
-   temp = cos(a);
+   temp = sin(a);
    a = a + 1 / (12 * PI);
    pop();
  }
@@ -88,7 +106,7 @@
    pop();
  }
 
- function keyTyped() {
+ function keyTyped() {////change size of player
    if (key === 'q') {
      playerSize = 100;
    } else if (key === 'e') {
@@ -122,15 +140,6 @@
      sx = 1 * sin(Angle) * fx;
      sy = 1 * cos(Angle) * fy;
      control = createVector(sx * noise(mouseX), sy * noise(mouseY));
-     // push()
-     // strokeWeight(2);
-     // text(degrees(Angle), 50, 50);
-     // text(sx, 50, 80);
-     // text(sy, 50, 100);
-     // text("X:   " + mouseX + "      " + this.pos.x, 500, 50);
-     // text("Y:   " + mouseY * -1 + "      " + this.pos.y * -1, 500, 70);
-     //
-     // pop();
      this.applyForce(control);
 
    }
@@ -147,13 +156,13 @@
    this.show = function() {
      push();
      strokeWeight(2);
-     fill(255, 0, 0, 50);
+     fill(20);
      ellipse(this.pos.x, this.pos.y, particleSize, particleSize);
      pop();
    }
  }
 
- function touch() {
+ function isPlayerTouchAnything() {
    if ((particlePosX > (windowWidth + zoneWidth - playerSize) / 2 || particlePosX < (windowWidth - zoneWidth + playerSize) / 2) || (particlePosY < (windowHeight - zoneHeight + playerSize) / 2 || particlePosY > (windowHeight + zoneHeight -
        playerSize) / 2)) {
      touchFlag = true;
@@ -176,38 +185,10 @@
 
  }
 
- function Obstacle() {
-   if (start == true && starting == false) {
-     for (var i = 0; i < 10; i++) {
-       parX[i] = random(windowWidth);
-       parY[i] = random(windowHeight);
-       obstacle[i] = new Particle(parX[i], parY[i]);
-     }
-     starting = true;
-   }
-   for (var k = 0; k < obstacle.length; k++) {
-     obstacle[k].follow();
-     obstacle[k].update();
-     obstacle[k].show();
-   }
- }
 
- function touchReation() {
-   if (touch() == true && start == true) {
-     push();
-     stroke(255);
-     strokeWeight(3);
-     text("GAMEOVER", windowWidth / 2, windowHeight / 2);
-     text("Your score: " + score, windowWidth / 2, windowHeight / 2 + 50);
-     text("Press any mouse's button to restart!", windowWidth / 2, windowHeight / 2 + 100);
-     pop();
-     score = 0;
-     noLoop();
-   }
 
- }
 
- function mousePressed() {
+ function mousePressed() {//control start and restart of the program
    if (start == false) {
      start = true;
      loop();
@@ -223,29 +204,32 @@
      //reset player position
      particlePosX = windowWidth / 2;
      particlePosY = windowHeight / 2;
-     Player();
-     //
+     a=0;
+     frameCount=0;
      loop();
    }
  }
 
- function Score() {
-   score = score + floor((frameCount / 60) * (playerSize / 40)) * 100;
+ function countScore() {
+   score = score + floor((frameCount / 60) * (playerSize / 40));
    push();
    textAlign(CENTER);
-   stroke(200);
-   strokeWeight(2);
-   text("Score: " + score, windowWidth / 2, windowHeight * 1 / 9, 50);
+   stroke(0);
+   strokeWeight(8);
+   textSize(20);
+   fill(255);
+   text("Score: " + score, windowWidth / 2, windowHeight * 1 / 9);
    pop();
  }
 
- function Start() {
+ function startMenu() {
    if (start == false) {
      push();
      textAlign(CENTER);
      stroke(0);
-     strokeWeight(1);
-     fill(0);
+     strokeWeight(10);
+     fill(255);
+     textSize(20)
      text("Press any mouse's button to start!", windowWidth / 2, windowHeight / 2);
      pop();
      noLoop();
