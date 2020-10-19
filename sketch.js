@@ -153,11 +153,13 @@
      } else {
        fy = 1
      };
-     sx = 1 * sin(Angle) * fx;
-     sy = 1 * cos(Angle) * fy;
-     control = createVector(sx * noise(mouseX), sy * noise(mouseY));
+     sx = 1 * sin(Angle+(random(-0.2,0.2))) * fx;
+     sy = 1 * cos(Angle+random(-0.2,0.2)) * fy;
+     control = createVector(sx*random(0,5), sy*random(0,5));
+     if(frameCount%30==0){
      this.applyForce(control);
-
+      frameCount=0;
+     }
    }
    this.applyForce = function(force) {
      this.acc.add(force);
