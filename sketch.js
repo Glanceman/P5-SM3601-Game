@@ -31,7 +31,9 @@
  }
 
  function setup() {
-   createCanvas(windowWidth, windowHeight);
+   var width=900;
+   var height=900
+   createCanvas(width, height);// fix size (square)
    background(160, 82, 45);
    frameRate(60);
    stroke(0);
@@ -43,8 +45,8 @@
    score = 0;
    a = 0;
    playerSize = 40;
-   particlePosX = windowWidth / 2;
-   particlePosY = windowHeight / 2;
+   particlePosX = width / 2;
+   particlePosY = height / 2;
  }
 
  function draw() { ////////////////////////////
@@ -54,11 +56,11 @@
    countScore();
    if (start == true && starting == false) {  //start generate particle
      for (var i = 0; i < 10; i++) {
-       parX[i] = random(windowWidth);
-       parY[i] = random(windowHeight);
-       while (dist(parX[i],parY[i],windowWidth/2,windowHeight/2)<(playerSize+particleSize+100)){
-       parX[i] = random(windowWidth);
-       parY[i] = random(windowHeight);
+       parX[i] = random(width);
+       parY[i] = random(height);
+       while (dist(parX[i],parY[i],width/2,height/2)<(playerSize+particleSize+100)){
+       parX[i] = random(width);
+       parY[i] = random(height);
        }
        obstacle[i] = new Particle(parX[i], parY[i]); 
      }
@@ -76,9 +78,9 @@
      strokeWeight(10);
      textSize(20);
      fill(255);
-     text("GAMEOVER", windowWidth / 2, windowHeight / 2);
-     text("Your score: " + score, windowWidth / 2, windowHeight / 2 + 50);
-     text("Press any mouse's button to restart!", windowWidth / 2, windowHeight / 2 + 100);
+     text("GAMEOVER", width / 2, height / 2);
+     text("Your score: " + score, width / 2, height / 2 + 50);
+     text("Press any mouse's button to restart!", width / 2, height / 2 + 100);
      pop();
      score = 0;
      noLoop();
@@ -87,14 +89,14 @@
 
  function createZone() {
    push();
-   zoneWidth = lerp(windowWidth, windowWidth * 3 / 5, temp);
-   zoneHeight = lerp(windowHeight, windowHeight * 4 / 5, temp);
+   zoneWidth = lerp(width, width * 3 / 5, temp);
+   zoneHeight = lerp(height, height * 4 / 5, temp);
    background(100);
    rectMode(CENTER);
    fill(200);
    stroke(0);
    strokeWeight(2);
-   rect(windowWidth / 2, windowHeight / 2, zoneWidth, zoneHeight);
+   rect(width / 2, height / 2, zoneWidth, zoneHeight);
    temp = sin(a);
    a = a + 1 / (12 * PI);
    pop();
@@ -177,7 +179,7 @@
  }
 
  function isPlayerTouchAnything() {
-   if ((particlePosX > (windowWidth + zoneWidth - playerSize) / 2 || particlePosX < (windowWidth - zoneWidth + playerSize) / 2) || (particlePosY < (windowHeight - zoneHeight + playerSize) / 2 || particlePosY > (windowHeight + zoneHeight -
+   if ((particlePosX > (width + zoneWidth - playerSize) / 2 || particlePosX < (width - zoneWidth + playerSize) / 2) || (particlePosY < (height - zoneHeight + playerSize) / 2 || particlePosY > (height + zoneHeight -
        playerSize) / 2)) {
      touchFlag = true;
    }
@@ -211,13 +213,13 @@
    if (touchFlag == true && start == true) {
      touchFlag = false;
      for (var i = 0; i < 10; i++) {
-       parX[i] = random(windowWidth);
-       parY[i] = random(windowHeight);
+       parX[i] = random(width);
+       parY[i] = random(height);
        obstacle[i] = new Particle(parX[i], parY[i]);
      }
      //reset player position
-     particlePosX = windowWidth / 2;
-     particlePosY = windowHeight / 2;
+     particlePosX = width / 2;
+     particlePosY = height / 2;
      playerSize=40;
      a=0;
      frameCount=0;
@@ -233,7 +235,7 @@
    strokeWeight(8);
    textSize(20);
    fill(255);
-   text("Score: " + score, windowWidth / 2, windowHeight * 1 / 9);
+   text("Score: " + score, width / 2, height * 1 / 9);
    pop();
  }
 
@@ -245,7 +247,7 @@
      strokeWeight(10);
      fill(255);
      textSize(20)
-     text("Press any mouse's button to start!", windowWidth / 2, windowHeight / 2);
+     text("Press any mouse's button to start!", width / 2, height / 2);
      pop();
      noLoop();
    }
