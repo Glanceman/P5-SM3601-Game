@@ -147,18 +147,16 @@
        fx = -1
      } else {
        fx = 1
-     };
+     }
      if ((Angle > PI / 2 && Angle < PI) || (Angle > -PI / 2 && Angle < 0)) {
        fy = -1
      } else {
        fy = 1
-     };
+     }
      sx = 1 * sin(Angle+(random(-0.1,0.1))) * fx;
      sy = 1 * cos(Angle+random(-0.1,0.1)) * fy;
      control = createVector(sx, sy);
-
      this.applyForce(control);
-
    }
    this.applyForce = function(force) {
      this.acc.add(force);
