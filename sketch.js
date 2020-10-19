@@ -153,10 +153,12 @@
      } else {
        fy = 1
      }
-     sx = 1 * sin(Angle+(random(-0.1,0.1))) * fx;
-     sy = 1 * cos(Angle+random(-0.1,0.1)) * fy;
-     control = createVector(sx, sy);
+     sx = 1 * sin(Angle+(random(-0.15,0.15))) * fx;
+     sy = 1 * cos(Angle+random(-0.15,0.15)) * fy;
+     control = createVector(sx*0.6, sy*0.6);
+     if(frameCount%2==0){
      this.applyForce(control);
+     }
    }
    this.applyForce = function(force) {
      this.acc.add(force);
